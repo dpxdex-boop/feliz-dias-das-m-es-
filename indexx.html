@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Dia das Mães 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    position: relative;
+}
+
+/* ÁREA DO TEXTO */
+.content {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* PÁGINAS */
+.page {
+    display: none;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.active {
+    display: block;
+}
+
+/* BARRA */
+.progress {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+}
+
+.fill {
+    height: 100%;
+    width: 0%;
+    background: white;
+}
+
+/* FIM */
+.fim {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* SETAS */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.left {
+    left: 10px;
+}
+
+.right {
+    right: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container"
+     onmousedown="pauseStory()"
+     onmouseup="resumeStory()"
+     ontouchstart="pauseStory()"
+     ontouchend="resumeStory()">
+
+<div class="progress" id="progress"></div>
+
+<div class="content">
+
+<div class="page active">
+Mãe, essa declaração é para senhora 💖<br><br>
+Hoje eu quero tirar um momento,<br>
+para agradecer por tudo que a senhora fez por mim.<br>
+Por cada cuidado, cada conselho,<br>
+e cada gesto de amor que nunca faltou.
+</div>
+
+<div class="page">
+Desde sempre, a senhora esteve ao meu lado,<br>
+me apoiando nos momentos difíceis,<br>
+e comemorando comigo nos momentos felizes.<br>
+Sua presença na minha vida faz toda diferença,<br>
+e eu sou muito grato por isso.
+</div>
+
+<div class="page">
+Seu amor é algo que não tem explicação,<br>
+é forte, verdadeiro e infinito.<br>
+É ele que me dá forças todos os dias,<br>
+e me ajuda a continuar mesmo quando tudo parece difícil.
+</div>
+
+<div class="page">
+A senhora é meu exemplo de força,<br>
+de coragem e de dedicação.<br>
+Tudo que eu sou hoje,<br>
+tem um pouco da senhora em mim.
+</div>
+
+<div class="page">
+Obrigado por nunca desistir de mim,<br>
+por sempre acreditar,<br>
+e por me ensinar o que é o amor de verdade.<br>
+Eu levo tudo isso comigo todos os dias.
+</div>
+
+<div class="page">
+Eu espero poder retribuir,<br>
+nem que seja um pouco,<br>
+de tudo que a senhora já fez por mim.<br>
+Porque a senhora merece o melhor do mundo.
+</div>
+
+<div class="page">
+Feliz Dia das Mães 💐<br><br>
+Que esse dia seja especial,<br>
+assim como a senhora é pra mim.<br><br>
+Eu te amo muito ❤️
+</div>
+
+</div>
+
+<div class="fim" id="fim">FIM 💖</div>
+
+<!-- SETAS -->
+<div class="arrow left" onclick="prev()">&lt;</div>
+<div class="arrow right" onclick="next()">&gt;</div>
+
+</div>
+
+<script>
+let current = 0;
+const pages = document.querySelectorAll(".page");
+const progressContainer = document.getElementById("progress");
+const fim = document.getElementById("fim");
+
+let bars = [];
+let interval;
+let paused = false;
+let width = 0;
+
+pages.forEach(() => {
+    const bar = document.createElement("div");
+    bar.classList.add("bar");
+
+    const fill = document.createElement("div");
+    fill.classList.add("fill");
+
+    bar.appendChild(fill);
+    progressContainer.appendChild(bar);
+
+    bars.push(fill);
+});
+
+function startStory() {
+    width = 0;
+
+    interval = setInterval(() => {
+        if (!paused) {
+            width += 1.5;
+            bars[current].style.width = width + "%";
+
+            if (width >= 100) {
+                next();
+            }
+        }
+    }, 100);
+}
+
+function pauseStory() {
+    paused = true;
+}
+
+function resumeStory() {
+    paused = false;
+}
+
+function next() {
+    clearInterval(interval);
+    pages[current].classList.remove("active");
+
+    current++;
+
+    if (current >= pages.length) {
+        fim.style.display = "block";
+        return;
+    }
+
+    pages[current].classList.add("active");
+    startStory();
+}
+
+function prev() {
+    if (current === 0) return;
+
+    clearInterval(interval);
+    bars[current].style.width = "0%";
+    pages[current].classList.remove("active");
+
+    current--;
+
+    pages[current].classList.add("active");
+    startStory();
+}
+
+startStory();
+</script>
+
+</body>
+</html>
